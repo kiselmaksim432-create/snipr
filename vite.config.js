@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/snipr/', // <-- Укажите имя вашего репозитория
+  base: '/snipr/',
   server: {
     port: 5173,
     open: true

@@ -1,4 +1,3 @@
-// src/App.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./lib/useAuth";
 import Landing from "./components/Landing";
@@ -8,20 +7,19 @@ import Redirect from "./components/Redirect";
 import React from 'react';
 
 export default function App() {
-  // Оборачиваем useAuth в try...catch, чтобы перехватить ошибку импорта
-  let auth;
+  let authData;
   try {
-    auth = useAuth();
-  } catch (error) {
-    console.error("Ошибка в useAuth:", error);
+    authData = useAuth();
+  } catch (err) {
+    console.error("Ошибка в useAuth:", err);
     return <div style={{padding: '20px', color: 'red', background: 'white'}}>
-      <h2>Ошибка загрузки модуля авторизации</h2>
-      <p>Проверьте, что файл src/lib/useAuth.js существует и экспортирует хук useAuth.</p>
-      <pre>{error.message}</pre>
+      <h2>Ошибка авторизации</h2>
+      <p>Не удалось загрузить модуль useAuth. Проверьте файл src/lib/useAuth.js</p>
+      <pre>{err.message}</pre>
     </div>;
   }
 
-  const { user, loading, login, signup, logout, refresh } = auth || {};
+  const { user, loading, login, signup, logout, refresh } = authData || {};
 
   if (loading) {
     return (
@@ -33,31 +31,10 @@ export default function App() {
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={user ? <Navigate to="/app/dashboard" replace /> : <Landing />}
-      />
-      <Route
-        path="/login"
-        element={
-          user ? <Navigate to="/app/dashboard" replace /> :
-            <Auth mode="login" login={login} signup={signup} />
-        }
-      />
-      <Route
-        path="/signup"
-        element={
-          user ? <Navigate to="/app/dashboard" replace /> :
-            <Auth mode="signup" login={login} signup={signup} />
-        }
-      />
-      <Route
-        path="/app/dashboard"
-        element={
-          user ? <Dashboard user={user} logout={logout} refreshUser={refresh} />
-               : <Navigate to="/login" replace />
-        }
-      />
+      <Route path="/" element={user ? <Navigate to="/app/dashboard" replace /> : <Landing />} />
+      <Route path="/login" element={user ? <Navigate to="/app/dashboard" replace /> : <Auth mode="login" login={login} signup={signup} />} />
+      <Route path="/signup" element={user ? <Navigate to="/app/dashboard" replace /> : <Auth mode="signup" login={login} signup={signup} />} />
+      <Route path="/app/dashboard" element={user ? <Dashboard user={user} logout={logout} refreshUser={refresh} /> : <Navigate to="/login" replace />} />
       <Route path="/app" element={<Navigate to="/app/dashboard" replace />} />
       <Route path="/:code" element={<Redirect />} />
     </Routes>
