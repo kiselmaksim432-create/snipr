@@ -6,16 +6,18 @@
   <title>Перенаправление...</title>
   <script>
     (function() {
-      // Убираем базовый путь /snipr
-      var path = window.location.pathname.replace(/^\/snipr/, '');
-      // Если есть hash — оставляем как есть
-      if (!window.location.hash && path && path !== '/') {
-        // Перенаправляем на hash-версию пути
-        window.location.replace('/snipr/#' + path);
-      } else {
-        // Иначе на главную
-        window.location.replace('/snipr/');
+      // Полный путь без домена и без /snipr
+      var fullPath = window.location.pathname;
+      // Убираем префикс /snipr, если есть
+      var base = '/snipr';
+      var relativePath = fullPath.startsWith(base) ? fullPath.slice(base.length) : fullPath;
+      // Если это корень или пусто — идём на главную
+      if (!relativePath || relativePath === '/') {
+        window.location.replace(base + '/');
+        return;
       }
+      // Иначе перенаправляем на hash-версию пути
+      window.location.replace(base + '/#' + relativePath);
     })();
   </script>
 </head>
