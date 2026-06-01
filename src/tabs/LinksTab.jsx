@@ -69,7 +69,6 @@ export default function LinksTab({ user, links, loading, onUpdate, totalClicks, 
       userData.balance = (userData.balance || 0) + click.revenue;
       storage.set(`user:${user.username}`, userData);
 
-      // Реферальная комиссия 10%
       if (userData.referredBy) {
         const refUser = storage.get(`user:${userData.referredBy}`);
         if (refUser) {
@@ -96,6 +95,9 @@ export default function LinksTab({ user, links, loading, onUpdate, totalClicks, 
       setTimeout(() => setCopiedId(null), 1500);
     } catch {}
   };
+
+  // Получаем базовый URL для коротких ссылок с учётом HashRouter и подпапки /snipr
+  const fullBaseUrl = `${window.location.origin}${import.meta.env.BASE_URL || '/'}`;
 
   return (
     <div className="anim-up">
@@ -145,7 +147,7 @@ export default function LinksTab({ user, links, loading, onUpdate, totalClicks, 
               кастомный алиас <span className="text-stone-500">(необязательно)</span>
             </label>
             <div className="flex items-center gap-2 border-b-2 border-stone-50/30 focus-within:border-lime-400 transition-colors">
-              <span className="font-mono text-sm text-stone-500">{BASE_URL}/</span>
+              <span className="font-mono text-sm text-stone-500">{fullBaseUrl}#/</span>
               <input
                 value={customAlias}
                 onChange={(e) => setCustomAlias(e.target.value)}
@@ -186,7 +188,7 @@ export default function LinksTab({ user, links, loading, onUpdate, totalClicks, 
           <div className="space-y-3">
             {links.map((link, i) => {
               const linkRevenue = (link.clicks || []).reduce((s, c) => s + (c.revenue || 0), 0);
-              const shortUrl = `${BASE_URL}/${link.shortCode}`;
+              const shortUrl = `${fullBaseUrl}#/${link.shortCode}`;
               return (
                 <div
                   key={link.id}
@@ -197,7 +199,7 @@ export default function LinksTab({ user, links, loading, onUpdate, totalClicks, 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <a
-                          href={`/${link.shortCode}`}
+                          href={shortUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="font-mono text-base sm:text-lg font-bold text-stone-900 truncate hover:text-lime-600 transition-colors"
@@ -206,7 +208,7 @@ export default function LinksTab({ user, links, loading, onUpdate, totalClicks, 
                           {shortUrl}
                         </a>
                         <button
-                          onClick={() => copyToClipboard(`${window.location.origin}/${link.shortCode}`, link.id)}
+                          onClick={() => copyToClipboard(shortUrl, link.id)}
                           className="text-stone-500 hover:text-lime-600 transition-colors flex-shrink-0"
                           title="скопировать"
                         >
