@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Перенаправление...</title>
+  <script>
+    (function() {
+      // Убираем базовый путь /snipr
+      var path = window.location.pathname.replace(/^\/snipr/, '');
+      // Если есть hash — оставляем как есть
+      if (!window.location.hash && path && path !== '/') {
+        // Перенаправляем на hash-версию пути
+        window.location.replace('/snipr/#' + path);
+      } else {
+        // Иначе на главную
+        window.location.replace('/snipr/');
+      }
+    })();
+  </script>
+</head>
+<body>Загрузка...</body>
+</html>
