@@ -1,25 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Перенаправление...</title>
-  <script>
-    (function() {
-      // Полный путь без домена и без /snipr
-      var fullPath = window.location.pathname;
-      // Убираем префикс /snipr, если есть
-      var base = '/snipr';
-      var relativePath = fullPath.startsWith(base) ? fullPath.slice(base.length) : fullPath;
-      // Если это корень или пусто — идём на главную
-      if (!relativePath || relativePath === '/') {
-        window.location.replace(base + '/');
-        return;
-      }
-      // Иначе перенаправляем на hash-версию пути
-      window.location.replace(base + '/#' + relativePath);
-    })();
-  </script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/snipr/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SNIPR</title>
+  <script type="module" crossorigin src="/snipr/assets/index-ENNnof9t.js"></script>
+  <link rel="stylesheet" crossorigin href="/snipr/assets/index-C8PM7lQz.css">
 </head>
-<body>Загрузка...</body>
+<body>
+    <div id="root"></div>
+</body>
 </html>
