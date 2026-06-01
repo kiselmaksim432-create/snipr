@@ -39,7 +39,7 @@ export default function Auth({ mode, login, signup }) {
       setBusy(false);
       return;
     }
-    navigate("/dashboard");
+    navigate("/app/dashboard");
   };
 
   return (
