@@ -7,7 +7,7 @@ import './index.css';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     {/** basename должно совпадать с base в vite.config.js */}
-    <HashRouter basename="/snipr">
+    <HashRouter>
       <App />
     </HashRouter>
   </StrictMode>
