@@ -1,6 +1,6 @@
 // src/App.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./lib/useAuth"; // Проверьте правильность пути!
+import { useAuth } from "./lib/useAuth";
 import Landing from "./components/Landing";
 import Auth from "./components/Auth";
 import Dashboard from "./components/Dashboard";
@@ -8,15 +8,20 @@ import Redirect from "./components/Redirect";
 import React from 'react';
 
 export default function App() {
-  let authData;
+  // Оборачиваем useAuth в try...catch, чтобы перехватить ошибку импорта
+  let auth;
   try {
-    authData = useAuth();
+    auth = useAuth();
   } catch (error) {
-    console.error("Ошибка при вызове useAuth:", error);
-    return <div style={{padding: '20px', color: 'red'}}>Ошибка загрузки данных пользователя. Проверьте консоль.</div>;
+    console.error("Ошибка в useAuth:", error);
+    return <div style={{padding: '20px', color: 'red', background: 'white'}}>
+      <h2>Ошибка загрузки модуля авторизации</h2>
+      <p>Проверьте, что файл src/lib/useAuth.js существует и экспортирует хук useAuth.</p>
+      <pre>{error.message}</pre>
+    </div>;
   }
 
-  const { user, loading, login, signup, logout, refresh } = authData || {};
+  const { user, loading, login, signup, logout, refresh } = auth || {};
 
   if (loading) {
     return (
@@ -28,7 +33,6 @@ export default function App() {
 
   return (
     <Routes>
-      {/* Все ваши маршруты остаются без изменений */}
       <Route
         path="/"
         element={user ? <Navigate to="/app/dashboard" replace /> : <Landing />}
